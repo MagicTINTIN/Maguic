@@ -1,8 +1,8 @@
 #include <iostream>
-#include "maguic.hh"
+#include "../src/maguic.hh"
 
 int main() {
-    std::cout << "Hello World!";
+    std::cout << "Hello World!\n";
     Maguic::Window win{"Main Window"};
     return 0;
 }
