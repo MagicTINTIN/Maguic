@@ -1,6 +1,8 @@
 #include "maguic.hh"
 #include <string>
+#include <thread>
 #include <iostream>
+#include <functional>
 
 #include <SDL2/SDL.h>
 
@@ -19,8 +21,7 @@ namespace Maguic
                       << "SDL_Error: " << SDL_GetError() << std::endl;
         }
 
-        _mainThread = std::thread([this](){this->mainWindowLoop();});
-        // SDL_Quit();
+        _mainThread = std::thread(std::bind(&Window::mainWindowLoop, this));
     }
     Window::Window(std::string name) : Window(name, 400, 300)
     {
@@ -30,6 +31,8 @@ namespace Maguic
     {
         _running = false;
         _mainThread.join();
+        SDL_DestroyWindow(_window);
+        SDL_Quit();
     }
 
     void Window::setVisible(bool visible)
