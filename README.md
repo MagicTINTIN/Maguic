@@ -1,8 +1,13 @@
 # Maguic
-A (maybe) future C++ library for GUI using SDL2.
+A (maybe) future C++ library for GUI using SDL3 ???.
 
 ## Requirements
-Intall SDL2 dev libraries
+Intall SDL3 dev libraries
+
+### Arch Linux
+```
+sudo pacman -Sy sdl3
+```
 
 ### NixOS
 ```nix
@@ -14,15 +19,9 @@ Intall SDL2 dev libraries
       glib
       pkg-config
 
-      SDL2
-      SDL2_ttf
-      SDL2_net
-      SDL2_gfx
-      SDL2_sound
-      SDL2_mixer
-      SDL2_image
+      sdl3
     ];
-    GREETING = "SDL2/CMake env dev started";
+    GREETING = "SDL3/CMake env dev started";
 
     shellHook = ''
       zsh

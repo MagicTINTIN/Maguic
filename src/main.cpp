@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #define SCREEN_WIDTH    800
 #define SCREEN_HEIGHT   600
