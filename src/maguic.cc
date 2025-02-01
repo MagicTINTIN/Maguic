@@ -8,7 +8,7 @@
 
 namespace Maguic
 {
-    Window::Window(std::string name, int width, int height) : _width(width), _height(height), _name(name)
+    Window::Window(std::string const name, int width, int height) : _name(name), _width(width), _height(height)
     {
         _window = SDL_CreateWindow(_name.c_str(),
                                    SDL_WINDOWPOS_UNDEFINED,

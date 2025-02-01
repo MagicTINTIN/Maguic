@@ -5,7 +5,8 @@ project(Maguic)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
 file(GLOB SOURCES "src/*.cc")
-add_executable(${PROJECT_NAME} ${SOURCES})
+file(GLOB EXAMPLES "examples/*.cc")
+add_executable(${PROJECT_NAME} ${SOURCES} ${EXAMPLES})
 
 # add all headers files under the include directory
 target_include_directories(${PROJECT_NAME} PRIVATE include)

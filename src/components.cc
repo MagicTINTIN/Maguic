@@ -10,7 +10,6 @@ namespace Maguic
 {
     // Component
     Component::Component(int w, int h) : _width(w), _height(h) {}
-    Component::~Component() = default;
 
     int Component::getWidth() const { return _width; }
     int Component::getHeight() const { return _height; }
@@ -40,7 +39,7 @@ namespace Maguic
     }
     void Panel::removeAllComponents()
     {
-        _components.empty();
+        _components.clear();
     }
 
     void Panel::addComponent(std::shared_ptr<Component> component)

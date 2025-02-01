@@ -23,7 +23,7 @@ namespace Maguic
         void mainWindowLoop();
 
     public:
-        Window(std::string name, int width, int height);
+        Window(std::string const name, int width, int height);
         Window(std::string name);
         ~Window();
         void setVisible(bool visible);
@@ -38,8 +38,7 @@ namespace Maguic
         int _width, _height;
 
     public:
-        Component(int w, int h) : _width(w), _height(h) {}
-
+        Component(int w, int h);
         virtual ~Component() = default;
 
         int getWidth() const;
@@ -73,6 +72,7 @@ namespace Maguic
     public:
         Panel();
         Panel(int width, int height);
+        ~Panel();
 
         void removeAllComponents();
         void addComponent(std::shared_ptr<Component> component);
