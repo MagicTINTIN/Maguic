@@ -6,6 +6,7 @@
 #include <thread>
 #include <vector>
 #include <memory>
+#include <functional>
 
 #include <SDL3/SDL.h>
 
@@ -20,13 +21,19 @@ namespace Maguic
         std::thread _mainThread;
         bool _running;
 
+        std::vector<void (*)()> actions;
+        std::function<void()> quitSequence;
+
         void mainWindowLoop();
+        void handleEvents(SDL_Event &e);
 
     public:
         Window(std::string const name, int width, int height);
         Window(std::string name);
         ~Window();
         void setVisible(bool visible);
+        void close();
+        void setQuitSequence(std::function<void()> callback);
     };
 
     // ##################### COMPONENTS ##################### //

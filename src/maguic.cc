@@ -20,6 +20,9 @@ namespace Maguic
         }
 
         _mainThread = std::thread(std::bind(&Window::mainWindowLoop, this));
+        // setQuitSequence(std::bind(&Window::close, this));
+        setQuitSequence([this]()
+                        { this->close(); });
     }
     Window::Window(std::string name) : Window(name, 400, 300)
     {
@@ -27,9 +30,7 @@ namespace Maguic
 
     Window::~Window()
     {
-        _running = false;
-        _mainThread.join();
-        SDL_DestroyWindow(_window);
+        close();
         SDL_Quit();
     }
 
@@ -44,8 +45,38 @@ namespace Maguic
     void Window::mainWindowLoop()
     {
         _running = true;
-        while (_running)
+        SDL_Event e;
+        while (_running && SDL_WaitEvent( &e ))
         {
+            handleEvents(e);
         }
     }
+
+    void Window::handleEvents(SDL_Event &e)
+    {
+        if (e.type == SDL_EVENT_QUIT)
+        {
+            // TODO: link the event to the correct window w/ e.window
+            quitSequence();
+        }
+    }
+
+    void Window::close()
+    {
+        if (_running)
+        {
+            _running = false;
+            // SDL_PushEvent()
+            _mainThread.join();
+            SDL_DestroyWindow(_window);
+        }
+        // TODO: maybe sdl quit only when there is no more windows
+        // SDL_Quit();
+    }
+
+    void Window::setQuitSequence(std::function<void()> callback)
+    {
+        quitSequence = std::move(callback);
+    }
+
 } // namespace Maguic

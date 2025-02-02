@@ -8,10 +8,10 @@ int main() {
 
     sleep(1);
     win.setVisible(true);
-    sleep(2);
-    win.setVisible(false);
-    sleep(1);
-    win.setVisible(true);
-    sleep(1);
+    sleep(4);
+    // win.setVisible(false);
+    // sleep(1);
+    // win.setVisible(true);
+    // sleep(1);
     return 0;
 }
