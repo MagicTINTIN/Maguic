@@ -7,11 +7,14 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <atomic>
 
 #include <SDL3/SDL.h>
 
 namespace Maguic
 {
+    enum MaguicStatus {RUNNING, CLOSING};
+
     class Window
     {
     private:
@@ -19,13 +22,15 @@ namespace Maguic
         SDL_Window *_window;
         int _width, _height;
         std::thread _mainThread;
-        bool _running;
+        
+        std::atomic<bool> _running;
+        std::atomic<int> _closingCounter = 0;
 
         std::vector<void (*)()> actions;
-        std::function<void()> quitSequence;
+        std::function<bool()> quitSequence;
 
         void mainWindowLoop();
-        void handleEvents(SDL_Event &e);
+        MaguicStatus handleEvents(SDL_Event &e);
 
     public:
         Window(std::string const name, int width, int height);
@@ -33,7 +38,7 @@ namespace Maguic
         ~Window();
         void setVisible(bool visible);
         void close();
-        void setQuitSequence(std::function<void()> callback);
+        void setQuitSequence(std::function<bool()> callback);
     };
 
     // ##################### COMPONENTS ##################### //

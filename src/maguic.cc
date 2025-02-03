@@ -10,6 +10,8 @@ namespace Maguic
 {
     Window::Window(std::string const name, int width, int height) : _name(name), _width(width), _height(height)
     {
+        // TODO: init all the necessary events
+        SDL_Init(SDL_INIT_EVENTS);
         _window = SDL_CreateWindow(_name.c_str(),
                                    _width, _height,
                                    SDL_WINDOW_HIDDEN);
@@ -22,7 +24,7 @@ namespace Maguic
         _mainThread = std::thread(std::bind(&Window::mainWindowLoop, this));
         // setQuitSequence(std::bind(&Window::close, this));
         setQuitSequence([this]()
-                        { this->close(); });
+                        { this->close(); return true; });
     }
     Window::Window(std::string name) : Window(name, 400, 300)
     {
@@ -30,12 +32,18 @@ namespace Maguic
 
     Window::~Window()
     {
-        close();
+        printf("~Window\n");
+        this->close();
+        printf("Joining\n");
+        _mainThread.join();
+        printf("Joined\n");
         SDL_Quit();
+        printf("SDLquited\n");
     }
 
     void Window::setVisible(bool visible)
     {
+        if(!_running) return;
         if (visible)
             SDL_ShowWindow(_window);
         else
@@ -46,35 +54,53 @@ namespace Maguic
     {
         _running = true;
         SDL_Event e;
-        while (_running && SDL_WaitEvent( &e ))
+        while (_running)
         {
-            handleEvents(e);
+            printf("Waiting for event...\n");
+            SDL_WaitEvent(&e);
+            if (handleEvents(e) == CLOSING) {
+                this->close();
+            }
+            printf("Post-Event, type=");
+            std::cout << "0x" << std::hex << e.type << std::endl;
         }
     }
 
-    void Window::handleEvents(SDL_Event &e)
+    MaguicStatus Window::handleEvents(SDL_Event &e)
     {
         if (e.type == SDL_EVENT_QUIT)
         {
+            printf("Quit event received\n");
             // TODO: link the event to the correct window w/ e.window
-            quitSequence();
+            if (quitSequence())
+                return CLOSING;
+            else 
+                return RUNNING;
         }
+        return RUNNING;
     }
 
     void Window::close()
     {
-        if (_running)
+        printf("C\n");
+        if (!_closingCounter++)
         {
-            _running = false;
-            // SDL_PushEvent()
-            _mainThread.join();
+            printf("X\n");
+            _running = false; //BEFORE DESTORYING WINDOW
+
+            // SDL_Event* event = new SDL_Event(SDL_QuitEvent());
+            //event->type = SDL_EVENT_USER;
+            // SDL_PushEvent(static_cast<SDL_Event*>(event));
+
+            // SDL_PushEvent(nullptr);
+            // _mainThread.join(); // joining itself...
             SDL_DestroyWindow(_window);
         }
         // TODO: maybe sdl quit only when there is no more windows
         // SDL_Quit();
     }
 
-    void Window::setQuitSequence(std::function<void()> callback)
+    void Window::setQuitSequence(std::function<bool()> callback)
     {
         quitSequence = std::move(callback);
     }
