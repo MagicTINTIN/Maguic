@@ -13,7 +13,7 @@ for arg in "$@"; do
     elif [ "$arg" = "--debug" ]; then
         cmakearg+=" -DCMAKE_BUILD_TYPE=Debug "
         folder="debug"
-    elif [ "$arg" = "--fastcomile" ]; then
+    elif [ "$arg" = "--fastcompile" ]; then
         makearg+=" -j4 "
     elif [ "$arg" = "--reset" ]; then
         rm -rf build/*
