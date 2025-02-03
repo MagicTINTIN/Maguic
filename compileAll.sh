@@ -18,7 +18,12 @@ for arg in "$@"; do
     elif [ "$arg" = "--reset" ]; then
         rm -rf build/*
         rm -rf debug/*
-    fi
+    elif [ "$arg" = "--vendored" ]; then
+	cmakearg+="-DMAGUIC_VENDORED=ON"
+    else
+	echo adding $arg to cmake args 
+	cmakearg+=" $arg"
+    fi	
 done
 
 cd $folder/
@@ -39,7 +44,7 @@ if [[ $? != 0 ]]; then
     exit $err
 elif [[ $? == 0 ]]; then
     echo "$(tput setaf 2)$(tput bold)Compilation of $projectName finished.$(tput sgr0)
-    Execute Brainfuck++ compiler with build/$projectName"
+    Execute example with build/$projectName"
 fi
 
 cd ../

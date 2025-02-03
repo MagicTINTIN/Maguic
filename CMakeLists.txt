@@ -16,9 +16,12 @@ target_compile_options(${PROJECT_NAME} PRIVATE $<$<NOT:$<C_COMPILER_ID:MSVC>>:-W
 option(MAGUIC_VENDORED "Use vendored libraries" OFF)
 
 if(MAGUIC_VENDORED)
-    # us SDL as a submodule in include/SDL
-    message( FATAL_ERROR "FIXME: NOT READY YET, CMake will exit." )
-    add_subdirectory(include/SDL EXCLUDE_FROM_ALL)
+    # use SDL as a submodule in include/SDL3
+    
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
+    
+    add_subdirectory(include/SDL3 EXCLUDE_FROM_ALL)
 else()
     # 1. Look for a SDL3 package,
     # 2. look for the SDL3-shared component, and
