@@ -15,14 +15,17 @@ for arg in "$@"; do
         folder="debug"
     elif [ "$arg" = "--fastcompile" ]; then
         makearg+=" -j4 "
+    elif [[ "$arg" =~ -j[0-9]+ ]]; then
+	echo FAST COMPILE DEBUG $arg
+	makearg+=" $arg "
     elif [ "$arg" = "--reset" ]; then
         rm -rf build/*
         rm -rf debug/*
     elif [ "$arg" = "--vendored" ]; then
-	cmakearg+="-DMAGUIC_VENDORED=ON"
+	cmakearg+=" -DMAGUIC_VENDORED=ON "
     else
 	echo adding $arg to cmake args 
-	cmakearg+=" $arg"
+	cmakearg+=" $arg "
     fi	
 done
 
