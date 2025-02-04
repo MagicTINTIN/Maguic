@@ -13,14 +13,19 @@ namespace Maguic
 
     int Component::getWidth() const { return _width; }
     int Component::getHeight() const { return _height; }
-    void Component::setSize(int w, int h) { _width = w;  _height = h; }
+    void Component::setSize(int w, int h)
+    {
+        _width = w;
+        _height = h;
+    }
 
     // Button
-    Button::Button(int width, int height, const std::string &name) : Component(width, height), _name(name) {}
-    Button::Button(const std::string &name) : Button(-1,-1, name) {}
+    Button::Button(int width, int height, const std::string &name, std::function<void()> action) : Component(width, height), _name(name), _action(std::move(action)) {}
+    Button::Button(const std::string &name) : Button(-1, -1, name, []() {}) {}
 
     std::string Button::getName() const { return _name; }
     void Button::setName(const std::string &name) { _name = name; }
+    void Button::setAction(std::function<void()> action) { _action = std::move(action); }
 
     void Button::render() const
     {
@@ -47,10 +52,12 @@ namespace Maguic
         _components.push_back(component);
     }
 
-    void Panel::render() const {
-    std::cout << "Panel of size (" << _width << ", " << _height << ") containing:\n";
-    for (const std::shared_ptr<Maguic::Component> &comp : _components) {
-        comp->render();
+    void Panel::render() const
+    {
+        std::cout << "Panel of size (" << _width << ", " << _height << ") containing:\n";
+        for (const std::shared_ptr<Maguic::Component> &comp : _components)
+        {
+            comp->render();
+        }
     }
-}
 } // namespace Maguic

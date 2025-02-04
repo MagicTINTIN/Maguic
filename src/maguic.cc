@@ -5,6 +5,7 @@
 #include <functional>
 
 #include <SDL3/SDL.h>
+// #include <SDL2/SDL_ttf.h> no need
 
 namespace Maguic
 {
@@ -12,6 +13,7 @@ namespace Maguic
     {
         // TODO: init all the necessary events
         SDL_Init(SDL_INIT_EVENTS);
+        
         _window = SDL_CreateWindow(_name.c_str(),
                                    _width, _height,
                                    SDL_WINDOW_HIDDEN);

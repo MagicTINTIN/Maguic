@@ -65,13 +65,15 @@ namespace Maguic
     {
     private:
         std::string _name;
+        std::function<void()> _action;
 
     public:
-        Button(int width, int height, const std::string &name);
+        Button(int width, int height, const std::string &name, std::function<void()> action);
         Button(const std::string &name);
 
         std::string getName() const;
         void setName(const std::string &name);
+        void setAction(std::function<void()> action);
 
         void render() const;
     };

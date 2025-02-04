@@ -2,11 +2,11 @@
 A (maybe) future C++ library for GUI using SDL3 ???.
 
 ## Requirements
-Intall SDL3 dev libraries
+Install SDL3 dev libraries
 
 ### Arch Linux
 ```
-sudo pacman -Sy sdl3
+sudo pacman -Sy sdl3 sdl_ttf
 ```
 
 ### NixOS
